@@ -1,4 +1,4 @@
-#include "printMaps.h"
+п»ї#include "printMaps.h"
 #include "windows.h"
 
 
@@ -12,11 +12,11 @@ enum ConsoleColor {
     White = 15
 };
 
-void printColor(int x){//вывод цветных символов
+void printColor(int x){//РІС‹РІРѕРґ С†РІРµС‚РЅС‹С… СЃРёРјРІРѕР»РѕРІ
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     if (x == EMPTY){
         SetConsoleTextAttribute(hConsole, (WORD) ((Black << 4) | Black));
-        printf("•");
+        printf("вЂў");
     }
     if (x == SHIP){
         SetConsoleTextAttribute(hConsole, (WORD) ((Black << 4) | Green));
@@ -38,7 +38,7 @@ void printColor(int x){//вывод цветных символов
 
 
 
-void clearMap(Cell map[][MAX_SIZE]){//очищаю значения после создания игрока
+void clearMap(Cell map[][MAX_SIZE]){//РѕС‡РёС‰Р°СЋ Р·РЅР°С‡РµРЅРёСЏ РїРѕСЃР»Рµ СЃРѕР·РґР°РЅРёСЏ РёРіСЂРѕРєР°
     int i,j;
     for (i = 0; i < MAX_SIZE; i++){
         for (j = 0; j < MAX_SIZE; j++){
@@ -51,7 +51,7 @@ void clearMap(Cell map[][MAX_SIZE]){//очищаю значения после создания игрока
     }
 }
 
-void clearStatus(Cell map[][MAX_SIZE]){//после расстановки очищаю карту от лишних значений
+void clearStatus(Cell map[][MAX_SIZE]){//РїРѕСЃР»Рµ СЂР°СЃСЃС‚Р°РЅРѕРІРєРё РѕС‡РёС‰Р°СЋ РєР°СЂС‚Сѓ РѕС‚ Р»РёС€РЅРёС… Р·РЅР°С‡РµРЅРёР№
     int i, j;
     for (i = 0; i < MAX_SIZE; i++){
         for(j = 0; j < MAX_SIZE; j++){
@@ -65,15 +65,15 @@ void clearStatus(Cell map[][MAX_SIZE]){//после расстановки очищаю карту от лишни
         }
     }
 }
-int inMap(int x, int y){//проверяем находится ли точка в пределах карты
+int inMap(int x, int y){//РїСЂРѕРІРµСЂСЏРµРј РЅР°С…РѕРґРёС‚СЃСЏ Р»Рё С‚РѕС‡РєР° РІ РїСЂРµРґРµР»Р°С… РєР°СЂС‚С‹
     if (x >= MIN_SIZE && x < MAX_SIZE && y >= MIN_SIZE && y < MAX_SIZE)
-        return TRUE;//Точка в пределах карты
+        return TRUE;//РўРѕС‡РєР° РІ РїСЂРµРґРµР»Р°С… РєР°СЂС‚С‹
     else return FALSE;
 }
 
 
 
-void printMaps(Cell ships[][MAX_SIZE], Cell hits[][MAX_SIZE]){//выводит карту кораблей и карту выстрелов
+void printMaps(Cell ships[][MAX_SIZE], Cell hits[][MAX_SIZE]){//РІС‹РІРѕРґРёС‚ РєР°СЂС‚Сѓ РєРѕСЂР°Р±Р»РµР№ Рё РєР°СЂС‚Сѓ РІС‹СЃС‚СЂРµР»РѕРІ
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     printf("  #abcdefghij#   #abcdefghij#\n");
     int i,j;
@@ -104,6 +104,6 @@ void printMaps(Cell ships[][MAX_SIZE], Cell hits[][MAX_SIZE]){//выводит карту ко
 
 void refreshMaps(Cell ships[MAX_SIZE][MAX_SIZE], Cell hits[MAX_SIZE][MAX_SIZE], int score_human, int score_comp){
     system("cls");
-    printf("Вы убили: %d Противник убил: %d\n", score_human, score_comp);//количество потопленных кораблей
-    printMaps(ships, hits);//вывод карты кораблей и карты попаданий
+    printf("Р’С‹ СѓР±РёР»Рё: %d РџСЂРѕС‚РёРІРЅРёРє СѓР±РёР»: %d\n", score_human, score_comp);//РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕС‚РѕРїР»РµРЅРЅС‹С… РєРѕСЂР°Р±Р»РµР№
+    printMaps(ships, hits);//РІС‹РІРѕРґ РєР°СЂС‚С‹ РєРѕСЂР°Р±Р»РµР№ Рё РєР°СЂС‚С‹ РїРѕРїР°РґР°РЅРёР№
 }

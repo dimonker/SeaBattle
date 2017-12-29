@@ -1,10 +1,10 @@
-#ifndef BOT_H
+п»ї#ifndef BOT_H
 #define BOT_H
 
 #include "shot.h"
 #include "printMaps.h"
 
-typedef struct Recommend{// координаты в которые рекомендуется стрелять боту
+typedef struct Recommend{// РєРѕРѕСЂРґРёРЅР°С‚С‹ РІ РєРѕС‚РѕСЂС‹Рµ СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ СЃС‚СЂРµР»СЏС‚СЊ Р±РѕС‚Сѓ
     Point point;
 }Recommend;
 
@@ -12,12 +12,12 @@ typedef struct Bot{
     Recommend recommend[4];
     Player maps;
     int score;
-    int mode;//1 - рандомный выстрел, 2 - добивание
-    int hit;//было ли попадание у бота
+    int mode;//1 - СЂР°РЅРґРѕРјРЅС‹Р№ РІС‹СЃС‚СЂРµР», 2 - РґРѕР±РёРІР°РЅРёРµ
+    int hit;//Р±С‹Р»Рѕ Р»Рё РїРѕРїР°РґР°РЅРёРµ Сѓ Р±РѕС‚Р°
     int iterator;
 } Bot;
 
-void clearRec(Bot *bot);//очистить рекомендуемые координаты
+void clearRec(Bot *bot);//РѕС‡РёСЃС‚РёС‚СЊ СЂРµРєРѕРјРµРЅРґСѓРµРјС‹Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹
 void botFirstHit(Bot *bot, int xc, int yc);
 void botSecondHit(Bot *bot, int xc, int yc, Cell hits[MAX_SIZE][MAX_SIZE]);
 void botKilled(Bot *bot);

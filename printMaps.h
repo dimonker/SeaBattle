@@ -1,4 +1,4 @@
-#ifndef PRINTMAPS_H
+п»ї#ifndef PRINTMAPS_H
 #define PRINTMAPS_H
 
 #include "windows.h"
@@ -20,14 +20,14 @@ enum ConsoleColor;
 void printColor(int x);
 
 typedef struct Point{
-    int x,y; //координаты начала корабля нужны для определения убийства корабля
+    int x,y; //РєРѕРѕСЂРґРёРЅР°С‚С‹ РЅР°С‡Р°Р»Р° РєРѕСЂР°Р±Р»СЏ РЅСѓР¶РЅС‹ РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРёСЏ СѓР±РёР№СЃС‚РІР° РєРѕСЂР°Р±Р»СЏ
 }Point;
 
 typedef struct Cell{
-    Point point; //начальные координаты корабля
-    int status; //значение ячейки
-    int length; //длина корабля
-    int direction; //направление корабля 0 - горизонтальное 1 - вертикальное
+    Point point; //РЅР°С‡Р°Р»СЊРЅС‹Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹ РєРѕСЂР°Р±Р»СЏ
+    int status; //Р·РЅР°С‡РµРЅРёРµ СЏС‡РµР№РєРё
+    int length; //РґР»РёРЅР° РєРѕСЂР°Р±Р»СЏ
+    int direction; //РЅР°РїСЂР°РІР»РµРЅРёРµ РєРѕСЂР°Р±Р»СЏ 0 - РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅРѕРµ 1 - РІРµСЂС‚РёРєР°Р»СЊРЅРѕРµ
 }Cell;
 
 typedef struct Player{

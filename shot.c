@@ -1,9 +1,9 @@
-#include "shot.h"
+п»ї#include "shot.h"
 #include "printMaps.h"
 
-void markKill(Cell ships[][MAX_SIZE], Cell hits[][MAX_SIZE], int y, int x){//помечаем оставшиеся клетки вокруг корабля и клетки убитого корабля
+void markKill(Cell ships[][MAX_SIZE], Cell hits[][MAX_SIZE], int y, int x){//РїРѕРјРµС‡Р°РµРј РѕСЃС‚Р°РІС€РёРµСЃСЏ РєР»РµС‚РєРё РІРѕРєСЂСѓРі РєРѕСЂР°Р±Р»СЏ Рё РєР»РµС‚РєРё СѓР±РёС‚РѕРіРѕ РєРѕСЂР°Р±Р»СЏ
     hits[y][x].status = KILLED;
-    ships[y][x].status = KILLED;//помечаем убитый корабль на двух картах
+    ships[y][x].status = KILLED;//РїРѕРјРµС‡Р°РµРј СѓР±РёС‚С‹Р№ РєРѕСЂР°Р±Р»СЊ РЅР° РґРІСѓС… РєР°СЂС‚Р°С…
     int i,j;
     for (i = y - 1; i <= y+1; i++)
         for (j = x - 1; j <= x + 1; j++)
@@ -18,48 +18,48 @@ int wasKill(Cell ships[][MAX_SIZE], Cell hits[][MAX_SIZE], int i, int j){
     int m,x,y;
     x = ships[j][i].point.x;
     y = ships[j][i].point.y;
-    if (ships[j][i].direction == HORIZONTALLY){//для горизонтального корабля
+    if (ships[j][i].direction == HORIZONTALLY){//РґР»СЏ РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅРѕРіРѕ РєРѕСЂР°Р±Р»СЏ
         for (m = x; m < x + ships[j][i].length; m++){
                 if(ships[y][m].status == SHIP)
-                    return 0;//не убит т.к. у горизонтального корабля ещё есть целые клетки
+                    return 0;//РЅРµ СѓР±РёС‚ С‚.Рє. Сѓ РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅРѕРіРѕ РєРѕСЂР°Р±Р»СЏ РµС‰С‘ РµСЃС‚СЊ С†РµР»С‹Рµ РєР»РµС‚РєРё
                 }
         }
-    if (ships[j][i].direction == VERTICALLY){//для вертикального корабля
+    if (ships[j][i].direction == VERTICALLY){//РґР»СЏ РІРµСЂС‚РёРєР°Р»СЊРЅРѕРіРѕ РєРѕСЂР°Р±Р»СЏ
         for (m = y; m < y + ships[j][i].length; m++){
                 if(ships[m][x].status == SHIP)
-                    return 0;//не убит т.к. у вертикального корабля еще есть целые клетки
+                    return 0;//РЅРµ СѓР±РёС‚ С‚.Рє. Сѓ РІРµСЂС‚РёРєР°Р»СЊРЅРѕРіРѕ РєРѕСЂР°Р±Р»СЏ РµС‰Рµ РµСЃС‚СЊ С†РµР»С‹Рµ РєР»РµС‚РєРё
                 }
         }
-    //если программа прошла предыдущие условия, значит у корабля не осталось целых клеток т.е. корабль убит
-    if (ships[j][i].direction == HORIZONTALLY){//для горизонтального корабля
+    //РµСЃР»Рё РїСЂРѕРіСЂР°РјРјР° РїСЂРѕС€Р»Р° РїСЂРµРґС‹РґСѓС‰РёРµ СѓСЃР»РѕРІРёСЏ, Р·РЅР°С‡РёС‚ Сѓ РєРѕСЂР°Р±Р»СЏ РЅРµ РѕСЃС‚Р°Р»РѕСЃСЊ С†РµР»С‹С… РєР»РµС‚РѕРє С‚.Рµ. РєРѕСЂР°Р±Р»СЊ СѓР±РёС‚
+    if (ships[j][i].direction == HORIZONTALLY){//РґР»СЏ РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅРѕРіРѕ РєРѕСЂР°Р±Р»СЏ
         for (m = x; m < x + ships[j][i].length; m++){
                 if(ships[y][m].status == INJURED){
-                    markKill(ships, hits, y, m);// помечаем все оставшиеся клетки вокруг корабля
+                    markKill(ships, hits, y, m);// РїРѕРјРµС‡Р°РµРј РІСЃРµ РѕСЃС‚Р°РІС€РёРµСЃСЏ РєР»РµС‚РєРё РІРѕРєСЂСѓРі РєРѕСЂР°Р±Р»СЏ
                 }
             }
         }
-    if (ships[j][i].direction == VERTICALLY){//для вертикального корабля
+    if (ships[j][i].direction == VERTICALLY){//РґР»СЏ РІРµСЂС‚РёРєР°Р»СЊРЅРѕРіРѕ РєРѕСЂР°Р±Р»СЏ
         for (m = y; m < y + ships[j][i].length; m++){
                 if(ships[m][x].status == INJURED){
-                    markKill(ships, hits, m, x);// помечаем все оставшиеся клетки вокруг корабля
+                    markKill(ships, hits, m, x);// РїРѕРјРµС‡Р°РµРј РІСЃРµ РѕСЃС‚Р°РІС€РёРµСЃСЏ РєР»РµС‚РєРё РІРѕРєСЂСѓРі РєРѕСЂР°Р±Р»СЏ
                 }
             }
         }
-    return 1;//убит
+    return 1;//СѓР±РёС‚
 }
 
 int shot(Cell ships[][MAX_SIZE], Cell hits[][MAX_SIZE], int x, int y){
-    if (ships[y][x].status == SHIP){//попали в корабль
+    if (ships[y][x].status == SHIP){//РїРѕРїР°Р»Рё РІ РєРѕСЂР°Р±Р»СЊ
         hits[y][x].status = INJURED;//
-        ships[y][x].status = INJURED;//подбитый корабль
-        if(wasKill(ships,hits, x, y) == TRUE){//проверяем был ли убит корабль
-            return 0;//убил
+        ships[y][x].status = INJURED;//РїРѕРґР±РёС‚С‹Р№ РєРѕСЂР°Р±Р»СЊ
+        if(wasKill(ships,hits, x, y) == TRUE){//РїСЂРѕРІРµСЂСЏРµРј Р±С‹Р» Р»Рё СѓР±РёС‚ РєРѕСЂР°Р±Р»СЊ
+            return 0;//СѓР±РёР»
         }
-        return 1;//попал
+        return 1;//РїРѕРїР°Р»
     }else {
-        hits[y][x].status = MISS;//отмечаем клетку в которой нет корабля
+        hits[y][x].status = MISS;//РѕС‚РјРµС‡Р°РµРј РєР»РµС‚РєСѓ РІ РєРѕС‚РѕСЂРѕР№ РЅРµС‚ РєРѕСЂР°Р±Р»СЏ
         ships[y][x].status = MISS;
-        return 2;//промах
+        return 2;//РїСЂРѕРјР°С…
     }
 }
 

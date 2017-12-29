@@ -1,7 +1,7 @@
-#include "shot.h"
+п»ї#include "shot.h"
 #include "printMaps.h"
 
-typedef struct Recommend{// координаты в которые рекомендуется стрелять боту
+typedef struct Recommend{// РєРѕРѕСЂРґРёРЅР°С‚С‹ РІ РєРѕС‚РѕСЂС‹Рµ СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ СЃС‚СЂРµР»СЏС‚СЊ Р±РѕС‚Сѓ
     Point point;
 }Recommend;
 
@@ -9,12 +9,12 @@ typedef struct Bot{
     Recommend recommend[4];
     Player maps;
     int score;
-    int mode;//1 - рандомный выстрел, 2 - добивание
-    int hit;//было ли попадание у бота
-    int iterator;//для выбора рекомендуемых точек
+    int mode;//1 - СЂР°РЅРґРѕРјРЅС‹Р№ РІС‹СЃС‚СЂРµР», 2 - РґРѕР±РёРІР°РЅРёРµ
+    int hit;//Р±С‹Р»Рѕ Р»Рё РїРѕРїР°РґР°РЅРёРµ Сѓ Р±РѕС‚Р°
+    int iterator;//РґР»СЏ РІС‹Р±РѕСЂР° СЂРµРєРѕРјРµРЅРґСѓРµРјС‹С… С‚РѕС‡РµРє
 } Bot;
 
-void clearRec(Bot *bot){//очищеам рекомедуемые клетки для бота
+void clearRec(Bot *bot){//РѕС‡РёС‰РµР°Рј СЂРµРєРѕРјРµРґСѓРµРјС‹Рµ РєР»РµС‚РєРё РґР»СЏ Р±РѕС‚Р°
     int i;
     for (i = 0; i < 4; i++){
         bot->recommend[i].point.x = -1;
@@ -23,23 +23,23 @@ void clearRec(Bot *bot){//очищеам рекомедуемые клетки для бота
 }
 
 void botFirstHit(Bot *bot, int xc, int yc){
-        bot->hit = 1;//бот папал один раз
-        bot->mode = 2;//бот переходит в режим добивания
+        bot->hit = 1;//Р±РѕС‚ РїР°РїР°Р» РѕРґРёРЅ СЂР°Р·
+        bot->mode = 2;//Р±РѕС‚ РїРµСЂРµС…РѕРґРёС‚ РІ СЂРµР¶РёРј РґРѕР±РёРІР°РЅРёСЏ
         int f = 1, r, arr[4], i;
         arr[0] = rand() % 4;
         while (f < 4){
             M1: arr[f] = rand() % 4;
             for (i = 0; i < f; i++){
                 if(arr[f] == arr[i])
-                    goto M1;//если число повторяется, то меняем его
+                    goto M1;//РµСЃР»Рё С‡РёСЃР»Рѕ РїРѕРІС‚РѕСЂСЏРµС‚СЃСЏ, С‚Рѕ РјРµРЅСЏРµРј РµРіРѕ
             }
             f++;
-        }//генерируем массив из 4 различных чисел от 0 до 3 чтобы рекомендуемые клетки выбирались случайно
-            /*   Пример:
+        }//РіРµРЅРµСЂРёСЂСѓРµРј РјР°СЃСЃРёРІ РёР· 4 СЂР°Р·Р»РёС‡РЅС‹С… С‡РёСЃРµР» РѕС‚ 0 РґРѕ 3 С‡С‚РѕР±С‹ СЂРµРєРѕРјРµРЅРґСѓРµРјС‹Рµ РєР»РµС‚РєРё РІС‹Р±РёСЂР°Р»РёСЃСЊ СЃР»СѓС‡Р°Р№РЅРѕ
+            /*   РџСЂРёРјРµСЂ:
               0123456
             0|0000000
-            1|00r0000 3 (INJURED) - клетка в которую попали
-            2|0r3r000 r - рекомендуемые клетки для стрельбы
+            1|00r0000 3 (INJURED) - РєР»РµС‚РєР° РІ РєРѕС‚РѕСЂСѓСЋ РїРѕРїР°Р»Рё
+            2|0r3r000 r - СЂРµРєРѕРјРµРЅРґСѓРµРјС‹Рµ РєР»РµС‚РєРё РґР»СЏ СЃС‚СЂРµР»СЊР±С‹
             3|00r0000
             4|0000000
                      */
@@ -62,19 +62,19 @@ void botFirstHit(Bot *bot, int xc, int yc){
 }
 
 void botSecondHit(Bot *bot, int xc, int yc, Cell hits[MAX_SIZE][MAX_SIZE]){
-        /* Пример:
+        /* РџСЂРёРјРµСЂ:
             01234567
             0|00000000
-            1|00000000 3(INJURED) - клетка в которую попали
-            2|0rr33rr0 r - рекомендуемые точки для стрельбы
+            1|00000000 3(INJURED) - РєР»РµС‚РєР° РІ РєРѕС‚РѕСЂСѓСЋ РїРѕРїР°Р»Рё
+            2|0rr33rr0 r - СЂРµРєРѕРјРµРЅРґСѓРµРјС‹Рµ С‚РѕС‡РєРё РґР»СЏ СЃС‚СЂРµР»СЊР±С‹
             3|00000000
             4|00000000
                     */
-        clearRec(bot);//очищаем от предыдущих значений
-        bot->hit = 2;//было уже два или больше попаданий
-        bot->iterator = 0;//обнулем переменную для прохода по рекомендуемым точкам
+        clearRec(bot);//РѕС‡РёС‰Р°РµРј РѕС‚ РїСЂРµРґС‹РґСѓС‰РёС… Р·РЅР°С‡РµРЅРёР№
+        bot->hit = 2;//Р±С‹Р»Рѕ СѓР¶Рµ РґРІР° РёР»Рё Р±РѕР»СЊС€Рµ РїРѕРїР°РґР°РЅРёР№
+        bot->iterator = 0;//РѕР±РЅСѓР»РµРј РїРµСЂРµРјРµРЅРЅСѓСЋ РґР»СЏ РїСЂРѕС…РѕРґР° РїРѕ СЂРµРєРѕРјРµРЅРґСѓРµРјС‹Рј С‚РѕС‡РєР°Рј
         if (inMap(xc+1,yc) == TRUE){
-            if(hits[yc][xc+1].status == INJURED){//если справа предыдущее поподание
+            if(hits[yc][xc+1].status == INJURED){//РµСЃР»Рё СЃРїСЂР°РІР° РїСЂРµРґС‹РґСѓС‰РµРµ РїРѕРїРѕРґР°РЅРёРµ
                 bot->recommend[0].point.x = xc - 1;
                 bot->recommend[0].point.y = yc;
                 bot->recommend[1].point.x = xc + 2;
@@ -88,7 +88,7 @@ void botSecondHit(Bot *bot, int xc, int yc, Cell hits[MAX_SIZE][MAX_SIZE]){
 
         }
         if (inMap(xc-1,yc) == TRUE){
-            if(hits[yc][xc-1].status == INJURED){//если слева предыдущее попадание
+            if(hits[yc][xc-1].status == INJURED){//РµСЃР»Рё СЃР»РµРІР° РїСЂРµРґС‹РґСѓС‰РµРµ РїРѕРїР°РґР°РЅРёРµ
                 bot->recommend[0].point.x = xc - 2;
                 bot->recommend[0].point.y = yc;
                 bot->recommend[1].point.x = xc + 1;
@@ -100,7 +100,7 @@ void botSecondHit(Bot *bot, int xc, int yc, Cell hits[MAX_SIZE][MAX_SIZE]){
             }
         }
         if (inMap(xc,yc+1) == TRUE){
-            if(hits[yc+1][xc].status == INJURED){//если снизу предыдущее попадание
+            if(hits[yc+1][xc].status == INJURED){//РµСЃР»Рё СЃРЅРёР·Сѓ РїСЂРµРґС‹РґСѓС‰РµРµ РїРѕРїР°РґР°РЅРёРµ
                 bot->recommend[0].point.x = xc;
                 bot->recommend[0].point.y = yc + 2;
                 bot->recommend[1].point.x = xc;
@@ -112,7 +112,7 @@ void botSecondHit(Bot *bot, int xc, int yc, Cell hits[MAX_SIZE][MAX_SIZE]){
             }
         }
         if (inMap(xc,yc-1) == TRUE){
-            if(hits[yc-1][xc].status == INJURED){//если сверху предыдущее попадание
+            if(hits[yc-1][xc].status == INJURED){//РµСЃР»Рё СЃРІРµСЂС…Сѓ РїСЂРµРґС‹РґСѓС‰РµРµ РїРѕРїР°РґР°РЅРёРµ
                 bot->recommend[0].point.x = xc;
                 bot->recommend[0].point.y = yc - 2;
                 bot->recommend[1].point.x = xc;
@@ -126,47 +126,47 @@ void botSecondHit(Bot *bot, int xc, int yc, Cell hits[MAX_SIZE][MAX_SIZE]){
 }
 
 void botKilled(Bot *bot){
-    bot->score++;//увеличиваем количество очков бота
-    clearRec(bot);//обнуляем рекомендуемые точки
-    bot->mode = 1; // переходим в режим рандомной стрельбы
-    bot->hit = 0; //обнуляем значения попадний
-    bot->iterator = 0;  //обнулем переменную для прохода по рекомендуемым точкам
+    bot->score++;//СѓРІРµР»РёС‡РёРІР°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РѕС‡РєРѕРІ Р±РѕС‚Р°
+    clearRec(bot);//РѕР±РЅСѓР»СЏРµРј СЂРµРєРѕРјРµРЅРґСѓРµРјС‹Рµ С‚РѕС‡РєРё
+    bot->mode = 1; // РїРµСЂРµС…РѕРґРёРј РІ СЂРµР¶РёРј СЂР°РЅРґРѕРјРЅРѕР№ СЃС‚СЂРµР»СЊР±С‹
+    bot->hit = 0; //РѕР±РЅСѓР»СЏРµРј Р·РЅР°С‡РµРЅРёСЏ РїРѕРїР°РґРЅРёР№
+    bot->iterator = 0;  //РѕР±РЅСѓР»РµРј РїРµСЂРµРјРµРЅРЅСѓСЋ РґР»СЏ РїСЂРѕС…РѕРґР° РїРѕ СЂРµРєРѕРјРµРЅРґСѓРµРјС‹Рј С‚РѕС‡РєР°Рј
 }
 
 Point botSelectsPoint(Bot *bot){
     Point point;
     int xc, yc;
     M2:
-    if (bot->mode == 1){//рандомный выстрел
-                xc = rand() % MAX_SIZE;//еще не было попадания поэтому выбираем рандомные координаты
+    if (bot->mode == 1){//СЂР°РЅРґРѕРјРЅС‹Р№ РІС‹СЃС‚СЂРµР»
+                xc = rand() % MAX_SIZE;//РµС‰Рµ РЅРµ Р±С‹Р»Рѕ РїРѕРїР°РґР°РЅРёСЏ РїРѕСЌС‚РѕРјСѓ РІС‹Р±РёСЂР°РµРј СЂР°РЅРґРѕРјРЅС‹Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹
                 yc = rand() % MAX_SIZE;
             }
-            else if (bot->hit != 0){//mode = 2 режим добивания
-                    if (bot->recommend[bot->iterator].point.x == -1){//проверяем есть ли значения у рекомендуемой точки
-                        bot->iterator++;   //если нет, то переходим к следующей точке
+            else if (bot->hit != 0){//mode = 2 СЂРµР¶РёРј РґРѕР±РёРІР°РЅРёСЏ
+                    if (bot->recommend[bot->iterator].point.x == -1){//РїСЂРѕРІРµСЂСЏРµРј РµСЃС‚СЊ Р»Рё Р·РЅР°С‡РµРЅРёСЏ Сѓ СЂРµРєРѕРјРµРЅРґСѓРµРјРѕР№ С‚РѕС‡РєРё
+                        bot->iterator++;   //РµСЃР»Рё РЅРµС‚, С‚Рѕ РїРµСЂРµС…РѕРґРёРј Рє СЃР»РµРґСѓСЋС‰РµР№ С‚РѕС‡РєРµ
                         goto M2;
                     }
                     xc = bot->recommend[bot->iterator].point.x;
                     yc = bot->recommend[bot->iterator].point.y;
                     bot->iterator++;
             }
-    if (bot->maps.hits[yc][xc].status != EMPTY)//если бот стреляет по уже помеченной клетке
-        goto M2;//выбираются другие координаты
+    if (bot->maps.hits[yc][xc].status != EMPTY)//РµСЃР»Рё Р±РѕС‚ СЃС‚СЂРµР»СЏРµС‚ РїРѕ СѓР¶Рµ РїРѕРјРµС‡РµРЅРЅРѕР№ РєР»РµС‚РєРµ
+        goto M2;//РІС‹Р±РёСЂР°СЋС‚СЃСЏ РґСЂСѓРіРёРµ РєРѕРѕСЂРґРёРЅР°С‚С‹
     point.x = xc;
     point.y = yc;
     return point;
 }
 
-Bot createBot(){//создаем бота
+Bot createBot(){//СЃРѕР·РґР°РµРј Р±РѕС‚Р°
     Bot bot;
     bot.mode = 1;
     bot.hit = 0;
     bot.score = 0;
     bot.iterator = 0;
-    clearRec(&bot); //очищаем рекомендуемые точки
-    clearMap(bot.maps.ships); //обнулем значения карт
+    clearRec(&bot); //РѕС‡РёС‰Р°РµРј СЂРµРєРѕРјРµРЅРґСѓРµРјС‹Рµ С‚РѕС‡РєРё
+    clearMap(bot.maps.ships); //РѕР±РЅСѓР»РµРј Р·РЅР°С‡РµРЅРёСЏ РєР°СЂС‚
     clearMap(bot.maps.hits); //
-    randomShip(bot.maps.ships); //рандомно расставляем корабли
+    randomShip(bot.maps.ships); //СЂР°РЅРґРѕРјРЅРѕ СЂР°СЃСЃС‚Р°РІР»СЏРµРј РєРѕСЂР°Р±Р»Рё
     return bot;
 }
 

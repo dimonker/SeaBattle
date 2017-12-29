@@ -1,4 +1,4 @@
-/*
+п»ї/*
 Code::Blocks 16.01
 GNU GCC Compiler
 */
@@ -15,30 +15,30 @@ GNU GCC Compiler
 Player createHumanPlayer(){
     Player human;
     human.score = 0;
-    clearMap(human.hits);//обнуляем значения карты
+    clearMap(human.hits);//РѕР±РЅСѓР»СЏРµРј Р·РЅР°С‡РµРЅРёСЏ РєР°СЂС‚С‹
     clearMap(human.ships);
     while(1){
         system("cls");
-        printf("Как расставить корабли?\n 1 - случайно \n 2 - вручную\n\n\nПримеры ввода координат: a1\n\n");
+        printf("РљР°Рє СЂР°СЃСЃС‚Р°РІРёС‚СЊ РєРѕСЂР°Р±Р»Рё?\n 1 - СЃР»СѓС‡Р°Р№РЅРѕ \n 2 - РІСЂСѓС‡РЅСѓСЋ\n\n\nРџСЂРёРјРµСЂС‹ РІРІРѕРґР° РєРѕРѕСЂРґРёРЅР°С‚: a1\n\n");
         char n1[10], n2[10];
         scanf("%s", &n1);
         if (strlen(n1) > 1){
-            printf("Некорректный ввод\n");
+            printf("РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ\n");
             system("pause");
             continue;
         }
         strncpy(n2,n1,1);
         int n = atoi(n2);
         if (n == 1){
-            randomShip(human.ships);//расставляем корабли рандомно
+            randomShip(human.ships);//СЂР°СЃСЃС‚Р°РІР»СЏРµРј РєРѕСЂР°Р±Р»Рё СЂР°РЅРґРѕРјРЅРѕ
             break;
         }
         else if (n == 2){
-            manually(human.ships, human.hits);//расставляем корабли вручную
+            manually(human.ships, human.hits);//СЂР°СЃСЃС‚Р°РІР»СЏРµРј РєРѕСЂР°Р±Р»Рё РІСЂСѓС‡РЅСѓСЋ
             break;
         }
         else{
-           printf("Некорректный ввод\n");
+           printf("РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ\n");
            system("pause");
         }
     }
@@ -46,7 +46,7 @@ Player createHumanPlayer(){
 }
 
 Point humanInputCoordinates(Cell hits[][MAX_SIZE]){
-    printf("Введите координаты:\n");
+    printf("Р’РІРµРґРёС‚Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹:\n");
     Point point;
     int x,y;
     char s[10], a[10];
@@ -54,16 +54,16 @@ Point humanInputCoordinates(Cell hits[][MAX_SIZE]){
     strncpy(a, s, 1);
     int sz = strlen(s);
     memmove(s, s+1, sz-1);
-    s[sz-1] = 0;//удаляем первый символ
+    s[sz-1] = 0;//СѓРґР°Р»СЏРµРј РїРµСЂРІС‹Р№ СЃРёРјРІРѕР»
     y = atoi(s) - 1;
     x = *a - 'a';
     if (inMap(x, y) != TRUE){
-        printf("Неверно введены координаты\n");
+        printf("РќРµРІРµСЂРЅРѕ РІРІРµРґРµРЅС‹ РєРѕРѕСЂРґРёРЅР°С‚С‹\n");
         point.x = -1;
         system("pause");
     }
     else if (hits[y][x].status != EMPTY){
-        printf("Невозможно выстрелить\n");
+        printf("РќРµРІРѕР·РјРѕР¶РЅРѕ РІС‹СЃС‚СЂРµР»РёС‚СЊ\n");
         point.x = -1;
         system("pause");
     }else {
@@ -76,58 +76,58 @@ Point humanInputCoordinates(Cell hits[][MAX_SIZE]){
 int main()
 {
     SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);//для корректного изображения русских букв в консоле
-    srand(time(NULL));//чтобы нормально работал рандом
-    Player human = createHumanPlayer();//создаем игрока человека и расставляем корабли
-    Bot bot = createBot(); //создаем бота с расставленными рандомно кораблями
-    int x, y;//координаты точки, которые вводит игрок
-    int flag;//для выстрела 0-убил 1-попал 2-промах
-    int xc, yc;//координаты выстрела бота
-    int turn = 1;//1 - ходит игрок, 2 - ходит бот
+    SetConsoleOutputCP(1251);//РґР»СЏ РєРѕСЂСЂРµРєС‚РЅРѕРіРѕ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ СЂСѓСЃСЃРєРёС… Р±СѓРєРІ РІ РєРѕРЅСЃРѕР»Рµ
+    srand(time(NULL));//С‡С‚РѕР±С‹ РЅРѕСЂРјР°Р»СЊРЅРѕ СЂР°Р±РѕС‚Р°Р» СЂР°РЅРґРѕРј
+    Player human = createHumanPlayer();//СЃРѕР·РґР°РµРј РёРіСЂРѕРєР° С‡РµР»РѕРІРµРєР° Рё СЂР°СЃСЃС‚Р°РІР»СЏРµРј РєРѕСЂР°Р±Р»Рё
+    Bot bot = createBot(); //СЃРѕР·РґР°РµРј Р±РѕС‚Р° СЃ СЂР°СЃСЃС‚Р°РІР»РµРЅРЅС‹РјРё СЂР°РЅРґРѕРјРЅРѕ РєРѕСЂР°Р±Р»СЏРјРё
+    int x, y;//РєРѕРѕСЂРґРёРЅР°С‚С‹ С‚РѕС‡РєРё, РєРѕС‚РѕСЂС‹Рµ РІРІРѕРґРёС‚ РёРіСЂРѕРє
+    int flag;//РґР»СЏ РІС‹СЃС‚СЂРµР»Р° 0-СѓР±РёР» 1-РїРѕРїР°Р» 2-РїСЂРѕРјР°С…
+    int xc, yc;//РєРѕРѕСЂРґРёРЅР°С‚С‹ РІС‹СЃС‚СЂРµР»Р° Р±РѕС‚Р°
+    int turn = 1;//1 - С…РѕРґРёС‚ РёРіСЂРѕРє, 2 - С…РѕРґРёС‚ Р±РѕС‚
     Point point;
-    while(human.score < 10 && bot.score < 10){//10 - это количество кораблей; когда игрок или бот убивают 10 кораблей игра завершается
+    while(human.score < 10 && bot.score < 10){//10 - СЌС‚Рѕ РєРѕР»РёС‡РµСЃС‚РІРѕ РєРѕСЂР°Р±Р»РµР№; РєРѕРіРґР° РёРіСЂРѕРє РёР»Рё Р±РѕС‚ СѓР±РёРІР°СЋС‚ 10 РєРѕСЂР°Р±Р»РµР№ РёРіСЂР° Р·Р°РІРµСЂС€Р°РµС‚СЃСЏ
         if (turn == 1){
             refreshMaps(human.ships, human.hits, human.score, bot.score);
-            point = humanInputCoordinates(human.hits);//игрок вводит координаты для стрельбы
+            point = humanInputCoordinates(human.hits);//РёРіСЂРѕРє РІРІРѕРґРёС‚ РєРѕРѕСЂРґРёРЅР°С‚С‹ РґР»СЏ СЃС‚СЂРµР»СЊР±С‹
             y = point.y;
             x = point.x;
-            if (x == -1)//если неверно введены координаты, то начинаем цикл сначала
+            if (x == -1)//РµСЃР»Рё РЅРµРІРµСЂРЅРѕ РІРІРµРґРµРЅС‹ РєРѕРѕСЂРґРёРЅР°С‚С‹, С‚Рѕ РЅР°С‡РёРЅР°РµРј С†РёРєР» СЃРЅР°С‡Р°Р»Р°
                 continue;
-            flag = shot(bot.maps.ships, human.hits, x, y);//производим выстрел
+            flag = shot(bot.maps.ships, human.hits, x, y);//РїСЂРѕРёР·РІРѕРґРёРј РІС‹СЃС‚СЂРµР»
             refreshMaps(human.ships, human.hits, human.score, bot.score);
             if (flag == 0){
-                human.score++;//увеличиваем количество очков у игрока
-                printf("Убил!\n");
+                human.score++;//СѓРІРµР»РёС‡РёРІР°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РѕС‡РєРѕРІ Сѓ РёРіСЂРѕРєР°
+                printf("РЈР±РёР»!\n");
             }
             if (flag == 1){
-                printf("Попал!\n");
+                printf("РџРѕРїР°Р»!\n");
             }
             if (flag == 2){
-                printf("Промах!\n");
-                turn = 2;// предоставляем ход боту т.к. мы не попали
+                printf("РџСЂРѕРјР°С…!\n");
+                turn = 2;// РїСЂРµРґРѕСЃС‚Р°РІР»СЏРµРј С…РѕРґ Р±РѕС‚Сѓ С‚.Рє. РјС‹ РЅРµ РїРѕРїР°Р»Рё
             }
             system("pause");
         }
-        else {//ход бота
+        else {//С…РѕРґ Р±РѕС‚Р°
             point = botSelectsPoint(&bot);
             xc = point.x;
             yc = point.y;
-            flag = shot(human.ships, bot.maps.hits, xc, yc);//производим выстрел
+            flag = shot(human.ships, bot.maps.hits, xc, yc);//РїСЂРѕРёР·РІРѕРґРёРј РІС‹СЃС‚СЂРµР»
             refreshMaps(human.ships, human.hits, human.score, bot.score);
             if (flag == 0){
                 botKilled(&bot);
-                printf("Противник убил ваш корабль!: %c%d\n", xc + 'a', yc + 1);
+                printf("РџСЂРѕС‚РёРІРЅРёРє СѓР±РёР» РІР°С€ РєРѕСЂР°Р±Р»СЊ!: %c%d\n", xc + 'a', yc + 1);
             }
-            if (flag == 1){//бот попал
-                if (bot.hit == 1)//если до этого уже было одно попадание
+            if (flag == 1){//Р±РѕС‚ РїРѕРїР°Р»
+                if (bot.hit == 1)//РµСЃР»Рё РґРѕ СЌС‚РѕРіРѕ СѓР¶Рµ Р±С‹Р»Рѕ РѕРґРЅРѕ РїРѕРїР°РґР°РЅРёРµ
                     botSecondHit(&bot, xc, yc, bot.maps.hits);
-                if (bot.hit == 0)//если еще не было попаданий
+                if (bot.hit == 0)//РµСЃР»Рё РµС‰Рµ РЅРµ Р±С‹Р»Рѕ РїРѕРїР°РґР°РЅРёР№
                     botFirstHit(&bot, xc, yc);
-                printf("Противник попал: %c%d\n", xc + 'a', yc + 1);
+                printf("РџСЂРѕС‚РёРІРЅРёРє РїРѕРїР°Р»: %c%d\n", xc + 'a', yc + 1);
             }
-            if (flag == 2){//бот промахнулся
-                    printf("Противник промахнулся: %c%d\n", xc + 'a', yc + 1);
-                    printf("Ваш ход\n");
+            if (flag == 2){//Р±РѕС‚ РїСЂРѕРјР°С…РЅСѓР»СЃСЏ
+                    printf("РџСЂРѕС‚РёРІРЅРёРє РїСЂРѕРјР°С…РЅСѓР»СЃСЏ: %c%d\n", xc + 'a', yc + 1);
+                    printf("Р’Р°С€ С…РѕРґ\n");
                     turn = 1;
             }
             system("pause");
@@ -135,8 +135,8 @@ int main()
     }
     system("cls");
     if (human.score == 10)
-        printf("Вы победили!\n");
+        printf("Р’С‹ РїРѕР±РµРґРёР»Рё!\n");
     if (bot.score == 10)
-        printf("Вы проиграли!\n");
+        printf("Р’С‹ РїСЂРѕРёРіСЂР°Р»Рё!\n");
     return 0;
 }
