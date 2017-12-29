@@ -8,12 +8,23 @@ typedef struct Recommend{// координаты в которые рекомендуется стрелять боту
 typedef struct Bot{
     Recommend recommend[4];
     Player maps;
+    int score;
     int mode;//1 - рандомный выстрел, 2 - добивание
     int hit;//было ли попадание у бота
+    int iterator;//для выбора рекомендуемых точек
 } Bot;
 
+void clearRec(Bot *bot){//очищеам рекомедуемые клетки для бота
+    int i;
+    for (i = 0; i < 4; i++){
+        bot->recommend[i].point.x = -1;
+        bot->recommend[i].point.y = -1;
+    }
+}
 
 void botFirstHit(Bot *bot, int xc, int yc){
+        bot->hit = 1;//бот папал один раз
+        bot->mode = 2;//бот переходит в режим добивания
         int f = 1, r, arr[4], i;
         arr[0] = rand() % 4;
         while (f < 4){
@@ -50,7 +61,7 @@ void botFirstHit(Bot *bot, int xc, int yc){
         }
 }
 
-void botSecondHit(Bot *bot, int xc, int yc, Cell hits[10][10]){
+void botSecondHit(Bot *bot, int xc, int yc, Cell hits[MAX_SIZE][MAX_SIZE]){
         /* Пример:
             01234567
             0|00000000
@@ -58,8 +69,10 @@ void botSecondHit(Bot *bot, int xc, int yc, Cell hits[10][10]){
             2|0rr33rr0 r - рекомендуемые точки для стрельбы
             3|00000000
             4|00000000
-
                     */
+        clearRec(bot);//очищаем от предыдущих значений
+        bot->hit = 2;//было уже два или больше попаданий
+        bot->iterator = 0;//обнулем переменную для прохода по рекомендуемым точкам
         if (inMap(xc+1,yc) == TRUE){
             if(hits[yc][xc+1].status == INJURED){//если справа предыдущее поподание
                 bot->recommend[0].point.x = xc - 1;
@@ -112,22 +125,48 @@ void botSecondHit(Bot *bot, int xc, int yc, Cell hits[10][10]){
         }
 }
 
+void botKilled(Bot *bot){
+    bot->score++;//увеличиваем количество очков бота
+    clearRec(bot);//обнуляем рекомендуемые точки
+    bot->mode = 1; // переходим в режим рандомной стрельбы
+    bot->hit = 0; //обнуляем значения попадний
+    bot->iterator = 0;  //обнулем переменную для прохода по рекомендуемым точкам
+}
 
-void clearRec(Bot *bot){//очищеам рекомедуемые клетки для бота
-    int i;
-    for (i = 0; i < 4; i++){
-        bot->recommend[i].point.x = -1;
-        bot->recommend[i].point.y = -1;
-    }
+Point botSelectsPoint(Bot *bot){
+    Point point;
+    int xc, yc;
+    M2:
+    if (bot->mode == 1){//рандомный выстрел
+                xc = rand() % MAX_SIZE;//еще не было попадания поэтому выбираем рандомные координаты
+                yc = rand() % MAX_SIZE;
+            }
+            else if (bot->hit != 0){//mode = 2 режим добивания
+                    if (bot->recommend[bot->iterator].point.x == -1){//проверяем есть ли значения у рекомендуемой точки
+                        bot->iterator++;   //если нет, то переходим к следующей точке
+                        goto M2;
+                    }
+                    xc = bot->recommend[bot->iterator].point.x;
+                    yc = bot->recommend[bot->iterator].point.y;
+                    bot->iterator++;
+            }
+    if (bot->maps.hits[yc][xc].status != EMPTY)//если бот стреляет по уже помеченной клетке
+        goto M2;//выбираются другие координаты
+    point.x = xc;
+    point.y = yc;
+    return point;
 }
 
 Bot createBot(){//создаем бота
     Bot bot;
     bot.mode = 1;
     bot.hit = 0;
+    bot.score = 0;
+    bot.iterator = 0;
     clearRec(&bot); //очищаем рекомендуемые точки
     clearMap(bot.maps.ships); //обнулем значения карт
     clearMap(bot.maps.hits); //
+    randomShip(bot.maps.ships); //рандомно расставляем корабли
     return bot;
 }
 

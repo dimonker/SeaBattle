@@ -10,8 +10,11 @@
 #define KILLED 4
 #define MAX_SIZE 10
 #define MIN_SIZE 0
-#define HORIZONTALLY 'h'
-#define VERTICALLY 'v'
+
+enum Direction{
+    HORIZONTALLY = 0,
+    VERTICALLY = 1
+};
 
 enum ConsoleColor;
 void printColor(int x);
@@ -24,19 +27,22 @@ typedef struct Cell{
     Point point; //начальные координаты корабля
     int status; //значение ячейки
     int length; //длина корабля
-    char direction; //направление корабля
+    int direction; //направление корабля 0 - горизонтальное 1 - вертикальное
 }Cell;
 
 typedef struct Player{
-    Cell ships[10][10];
-    Cell hits[10][10];
+    Cell ships[MAX_SIZE][MAX_SIZE];
+    Cell hits[MAX_SIZE][MAX_SIZE];
+    int score;
 }Player;
 
-void clearMap(Cell map[][10]);
-void clearStatus(Cell map[][10]);
+
+
+void clearMap(Cell map[][MAX_SIZE]);
+void clearStatus(Cell map[][MAX_SIZE]);
 int inMap(int x, int y);
 
-void printMaps(Cell ships[][10], Cell hits[][10]);
-void refreshMaps(Cell ships[10][10], Cell hits[10][10], int score_human, int score_comp);
+void printMaps(Cell ships[][MAX_SIZE], Cell hits[][MAX_SIZE]);
+void refreshMaps(Cell ships[MAX_SIZE][MAX_SIZE], Cell hits[MAX_SIZE][MAX_SIZE], int score_human, int score_comp);
 
 #endif // PRINTMAPS_H

@@ -3,7 +3,7 @@
 #include "time.h"
 
 
-int setShip(int ship, char direction, int x, int y, Cell map[][10]){//функция для установовки корабля
+int setShip(int ship, int direction, int x, int y, Cell map[][MAX_SIZE]){//функция для установовки корабля
 
     int i,j;
     int shipDirH = 0, shipDirV = 0;
@@ -17,7 +17,7 @@ int setShip(int ship, char direction, int x, int y, Cell map[][10]){//функция дл
 
     for (i = y; i <= y + shipDirV; i++){
         for (j = x; j <= x + shipDirH; j++){
-            if (i >=0 && i < 10 && j >=0 && j<10){
+            if (i >= MIN_SIZE && i < MAX_SIZE && j >= MIN_SIZE && j < MAX_SIZE){
                 if (map[i][j].status != EMPTY)
                     return 1;//не удалось поставить корабль тк рядом есть другой корабль
             }
@@ -26,7 +26,7 @@ int setShip(int ship, char direction, int x, int y, Cell map[][10]){//функция дл
 
     for (i = y - 1; i <= y + shipDirV + 1; i++){
         for (j = x - 1; j <= x + shipDirH + 1 ; j++){
-            if (i >=0 && i < 10 && j >=0 && j<10){
+            if (i >= MIN_SIZE && i < MAX_SIZE && j >= MIN_SIZE && j < MAX_SIZE){
                 if ((direction == HORIZONTALLY && i == y && j >= x && j<= x + shipDirH) || (direction == VERTICALLY && j == x && i >= y && i <= y + shipDirV)){
                     map[i][j].status = SHIP;
                     map[i][j].point.x = x;
@@ -51,31 +51,29 @@ int setShip(int ship, char direction, int x, int y, Cell map[][10]){//функция дл
      */
 }
 
-void randomShip(Cell map[][10]){//функция рандомной расстановки кораблей
+void randomShip(Cell map[][MAX_SIZE]){//функция рандомной расстановки кораблей
     int ships[] = {0,4,3,2,1};//сейчас 4 - однопалубных 3 - двухпалубных 2 - трехпалубных и 1 - четырехбалубный
     while(ships[1] != 0 || ships[2] !=0 || ships[3] != 0 || ships[4] != 0){// цикл прервется когда все корабли закончатся
         int ship = 1 + rand() % 4;// рандомно выбираем кораль по его длине
         if (ship >= 1 && ship <= 4 && ships[ship] > 0){
-                char direction;
-                int z = rand() % 2;
-                if (z == 0)
-                    direction = HORIZONTALLY;
-                else direction = VERTICALLY;//рандомно выбираем направление корабля
+                int direction = rand() % 2;//рандомно выбираем направление корабля
                 int x, y;
-                x = rand() % 10;
-                y = rand() % 10;//рандомно выбираем начальные координаты корабля
+                x = rand() % MAX_SIZE;
+                y = rand() % MAX_SIZE;//рандомно выбираем начальные координаты корабля
                 int e = setShip(ship, direction, x, y, map);//устанавливаем корабль
                 if (e == 0)
                     ships[ship]--;//если корабль успешно установлен, то -1 корабль данной длины
             }
         }
+    clearStatus(map);//оставляем на карте только корабли
 }
 
-void manually(Cell map[][10], Cell hits[][10]){//расстановка кораблей вручную
+void manually(Cell map[][MAX_SIZE], Cell hits[][MAX_SIZE]){//расстановка кораблей вручную
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     int ships[] = {0,4,3,2,1};
-    char direction, s[10], a[10];
+    int direction;
+    char dir, s[10], a[10];
     int x = 0, y = 0, e = 0, ship = 0;
     while(ships[1] != 0 || ships[2] !=0 || ships[3] != 0 || ships[4] != 0){
         system("cls");
@@ -92,7 +90,11 @@ void manually(Cell map[][10], Cell hits[][10]){//расстановка кораблей вручную
         if (ship >= 1 && ship <= 4 && ships[ship] > 0){ // если есть такой корабль и он длиной от 1 до 4, то продолжаем ввод
                 if (ship != 1){
                         printf("Выберите ориентацию корабля: h - горизонтальная, v - вертикальная\n");
-                        direction = getche(); //направление корабля
+                        dir = getche(); //направление корабля
+                        if (dir == 'h')
+                            direction = HORIZONTALLY;
+                        else if (dir == 'v') direction = VERTICALLY;
+                        else direction = -1;
                         printf("\n");
                         }
                 else direction = HORIZONTALLY;
@@ -129,4 +131,5 @@ void manually(Cell map[][10], Cell hits[][10]){//расстановка кораблей вручную
             continue;
         }
     }
+    clearStatus(map);//оставляем на карте только корабли
 }

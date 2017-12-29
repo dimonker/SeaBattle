@@ -1,7 +1,7 @@
 #include "shot.h"
 #include "printMaps.h"
 
-void markKill(Cell ships[][10], Cell hits[][10], int y, int x){//помечаем оставшиеся клетки вокруг корабля и клетки убитого корабля
+void markKill(Cell ships[][MAX_SIZE], Cell hits[][MAX_SIZE], int y, int x){//помечаем оставшиеся клетки вокруг корабля и клетки убитого корабля
     hits[y][x].status = KILLED;
     ships[y][x].status = KILLED;//помечаем убитый корабль на двух картах
     int i,j;
@@ -14,31 +14,31 @@ void markKill(Cell ships[][10], Cell hits[][10], int y, int x){//помечаем оставш
                 }
 }
 
-int wasKill(Cell ships[][10], Cell hits[][10], int i, int j){
+int wasKill(Cell ships[][MAX_SIZE], Cell hits[][MAX_SIZE], int i, int j){
     int m,x,y;
     x = ships[j][i].point.x;
     y = ships[j][i].point.y;
-    if (ships[j][i].direction == 'h'){//для горизонтального корабля
+    if (ships[j][i].direction == HORIZONTALLY){//для горизонтального корабля
         for (m = x; m < x + ships[j][i].length; m++){
                 if(ships[y][m].status == SHIP)
                     return 0;//не убит т.к. у горизонтального корабля ещё есть целые клетки
                 }
         }
-    if (ships[j][i].direction == 'v'){//для вертикального корабля
+    if (ships[j][i].direction == VERTICALLY){//для вертикального корабля
         for (m = y; m < y + ships[j][i].length; m++){
                 if(ships[m][x].status == SHIP)
                     return 0;//не убит т.к. у вертикального корабля еще есть целые клетки
                 }
         }
     //если программа прошла предыдущие условия, значит у корабля не осталось целых клеток т.е. корабль убит
-    if (ships[j][i].direction == 'h'){//для горизонтального корабля
+    if (ships[j][i].direction == HORIZONTALLY){//для горизонтального корабля
         for (m = x; m < x + ships[j][i].length; m++){
                 if(ships[y][m].status == INJURED){
                     markKill(ships, hits, y, m);// помечаем все оставшиеся клетки вокруг корабля
                 }
             }
         }
-    if (ships[j][i].direction == 'v'){//для вертикального корабля
+    if (ships[j][i].direction == VERTICALLY){//для вертикального корабля
         for (m = y; m < y + ships[j][i].length; m++){
                 if(ships[m][x].status == INJURED){
                     markKill(ships, hits, m, x);// помечаем все оставшиеся клетки вокруг корабля
@@ -48,7 +48,7 @@ int wasKill(Cell ships[][10], Cell hits[][10], int i, int j){
     return 1;//убит
 }
 
-int shot(Cell ships[][10], Cell hits[][10], int x, int y){
+int shot(Cell ships[][MAX_SIZE], Cell hits[][MAX_SIZE], int x, int y){
     if (ships[y][x].status == SHIP){//попали в корабль
         hits[y][x].status = INJURED;//
         ships[y][x].status = INJURED;//подбитый корабль
